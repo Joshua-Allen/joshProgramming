@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@testing-library/dom": ">=5",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "eslint": ">=5.0.0",
+    "eslint-plugin-flowtype": "3.x",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-router": ">=5",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "typescript": ">=2.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
