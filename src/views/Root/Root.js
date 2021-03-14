@@ -1,6 +1,5 @@
-import { route } from "../../routes";
 import React from "react";
-import { matchRoutes, renderRoutes } from "react-router-config";
+import { renderRoutes } from "react-router-config";
 
 export const Root = ({ route }) => (
 	<div id="root">

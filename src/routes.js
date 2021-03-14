@@ -6,17 +6,19 @@ import Lessons from "./views/Lessons/Base";
 // https://github.com/reacttraining/react-router/tree/master/packages/react-router-config
 export const route = [
 	{
-		name: "Root",
+		title: "Root",
 		component: Root,
 		routes: [
 			{
-				name: "Josh Programming",
+				title: "Josh Programming",
+				menu: "Home",
 				path: "/",
 				exact: true,
 				component: Home,
 			},
 			{
-				name: "Lessons",
+				title: "Lessons",
+				menu: "Lessons",
 				path: "/Lessons",
 				exact: true,
 				component: Lessons,
@@ -24,3 +26,23 @@ export const route = [
 		],
 	},
 ];
+
+export function getRoutes() {
+	const routeObjectArray = [];
+
+	const rec = function (ar, depth) {
+		ar.forEach((e) => {
+			let copiedRoute = Object.assign({}, e);
+			copiedRoute.depth = depth;
+			delete copiedRoute.routes;
+
+			routeObjectArray.push(copiedRoute);
+			if (e.routes != null) {
+				rec(e.routes, depth + 1);
+			}
+		});
+	};
+	rec(route, 0);
+
+	return routeObjectArray;
+}
