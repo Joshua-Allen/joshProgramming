@@ -3,7 +3,7 @@ import React from "react";
 import { matchRoutes, renderRoutes } from "react-router-config";
 
 export const Root = ({ route }) => (
-	<div>
+	<div id="root">
 		{/* child routes won't render without this */}
 		{renderRoutes(route.routes)}
 	</div>
