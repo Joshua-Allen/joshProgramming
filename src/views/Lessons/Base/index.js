@@ -44,6 +44,7 @@ const useStyles = makeStyles(
 		},
 		tabs: {
 			borderRight: `1px solid ${theme.palette.divider}`,
+			overflow: "inherit",
 		},
 		tabBody: {
 			padding: "10px",
