@@ -1,126 +1,147 @@
 import React from "react";
 import "./style.css";
-import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
+
+import Paper from "@material-ui/core/Paper";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Button from "@material-ui/core/Button";
+
 import { makeStyles } from "@material-ui/core/styles";
+
+import { steps as vsCodeSteps } from "./VSCode/Steps";
+import { steps as stackblitzSteps } from "./stackblitz/Steps";
+
 //import Routes from "./routes";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "100%",
-		maxWidth: 360,
-		backgroundColor: theme.palette.background.paper,
+		//maxWidth: 360,
+		//backgroundColor: theme.palette.background.paper,
+	},
+	tabs: {
+		flexGrow: 1,
+	},
+	tabPanel: {
+		padding: "10px",
+	},
+	buttons: {
+		display: "flex",
+		justifyContent: "space-around",
+	},
+	backButton: {
+		marginRight: theme.spacing(1),
+	},
+	instructions: {
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(1),
 	},
 }));
 
-function ListItemCheck(props) {
-	let val = props.value;
-	const labelId = `checkbox-list-label-${val}`;
+function TabPanel(props) {
+	const { children, value, index, ...other } = props;
+	const classes = useStyles();
+
 	return (
-		<ListItem key={val} role={undefined} dense button onClick={props.onClick(val)}>
-			<ListItemIcon>
-				<Checkbox
-					edge="start"
-					checked={props.checked.indexOf(val) !== -1}
-					tabIndex={-1}
-					disableRipple
-					inputProps={{ "aria-labelledby": labelId }}
-				/>
-			</ListItemIcon>
-			<ListItemText id={labelId} primary={props.children} />
-		</ListItem>
+		<div
+			className={classes.tabPanel}
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}>
+			{value === index && <div>{children}</div>}
+		</div>
 	);
 }
 
 function LessonSetup() {
 	const classes = useStyles();
-	const [checked, setChecked] = React.useState([0]);
+	const [value, setValue] = React.useState(0);
 
-	const handleToggle = (value) => () => {
-		const currentIndex = checked.indexOf(value);
-		const newChecked = [...checked];
-
-		if (currentIndex === -1) {
-			newChecked.push(value);
-		} else {
-			newChecked.splice(currentIndex, 1);
-		}
-
-		setChecked(newChecked);
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
 	};
 
-	let checkIndex = 0;
-	//const value = "Lesson Setup";
+	function a11yProps(index) {
+		return {
+			id: `simple-tab-${index}`,
+			"aria-controls": `simple-tabpanel-${index}`,
+		};
+	}
+
 	return (
 		<div>
-			<Typography align="center" variant="h5" paragraph={true}>
-				Setting up your development environment
-			</Typography>
-			<hr />
-
-			<Typography align="left" variant="h6" paragraph={true}>
-				Download{" "}
-				<a href="https://code.visualstudio.com/download" target="blank">
-					Visual Studio Code
-				</a>
-			</Typography>
-
-			<List className={classes.root}>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Install it
-				</ListItemCheck>
-			</List>
-
-			<Typography align="left" variant="h6" paragraph={true}>
-				Download the extensions:
-			</Typography>
-
-			<List className={classes.root}>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Live Server
-				</ListItemCheck>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Material Theme
-				</ListItemCheck>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Visual Studio IntelliCode
-				</ListItemCheck>
-			</List>
-
-			<Typography align="left" variant="h6" paragraph={true}>
-				Setup a project:
-			</Typography>
-
-			<List className={classes.root}>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Create a folder in your documnets named "Projects"
-				</ListItemCheck>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Create a new folder in the Projects folder named "Playground"
-				</ListItemCheck>
-				<ListItemCheck value={++checkIndex} checked={checked} onClick={handleToggle}>
-					Open the Playground folder in Visual Studio Code
-				</ListItemCheck>
-			</List>
+			<Paper className={classes.tabs}>
+				<Tabs
+					value={value}
+					onChange={handleChange}
+					indicatorColor="primary"
+					textColor="primary"
+					centered>
+					<Tab label="VS Code" {...a11yProps(0)} />
+					<Tab label="StackBlitz" {...a11yProps(1)} />
+				</Tabs>
+			</Paper>
+			<TabPanel value={value} index={0}>
+				<LessonSetupSteps steps={vsCodeSteps} />
+			</TabPanel>
+			<TabPanel value={value} index={1}>
+				<LessonSetupSteps steps={stackblitzSteps} />
+			</TabPanel>
 		</div>
 	);
 }
-/*
-				<ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
-					<ListItemIcon>
-						<Checkbox
-							edge="start"
-							checked={checked.indexOf(value) !== -1}
-							tabIndex={-1}
-							disableRipple
-							inputProps={{ "aria-labelledby": 0 }}
-						/>
-					</ListItemIcon>
-					<ListItemText id={0} primary={`Line item ${value + 1}`} />
-				</ListItem>
-*/
+
+function LessonSetupSteps(props) {
+	const classes = useStyles();
+	const [activeStep, setActiveStep] = React.useState(0);
+	const steps = props.steps;
+
+	const handleNext = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+	};
+
+	const handleBack = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+	};
+
+	const handleReset = () => {
+		setActiveStep(0);
+	};
+
+	const lastStep = activeStep === steps.length - 1;
+	const reset = activeStep === steps.length;
+	return (
+		<div className={classes.root}>
+			{!reset && <div className={classes.instructions}>{steps[activeStep].Content()}</div>}
+			{reset ? (
+				<div className={classes.buttons}>
+					<Button onClick={handleReset}>Reset</Button>
+				</div>
+			) : (
+				<div className={classes.buttons}>
+					<Button disabled={activeStep === 0} onClick={handleBack} className={classes.backButton}>
+						Back
+					</Button>
+					<Button disabled={reset} variant="contained" color="primary" onClick={handleNext}>
+						{lastStep ? "Finish" : "Next"}
+					</Button>
+				</div>
+			)}
+			<Stepper activeStep={activeStep} alternativeLabel>
+				{steps.map((step) => (
+					<Step key={step.Text}>
+						<StepLabel>{step.Text}</StepLabel>
+					</Step>
+				))}
+			</Stepper>
+		</div>
+	);
+}
+
 export default LessonSetup;

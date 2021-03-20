@@ -5,7 +5,6 @@ import Box from "@material-ui/core/Box";
 //import Routes from "./routes";
 
 function LessonSetup() {
-	const value = "Lesson 0 - intro";
 	return (
 		<Box>
 			<Typography align="center" variant="h5" paragraph={true}>

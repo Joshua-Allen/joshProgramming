@@ -38,16 +38,20 @@ const useStyles = makeStyles(
 	(theme) => ({
 		root: {
 			flexGrow: 1,
-			backgroundColor: theme.palette.background.paper,
+			justifyContent: "center",
+			backgroundColor: theme.palette.grey[500], //theme.palette.background.paper,
 			display: "flex",
 			height: "100%",
 		},
 		tabs: {
 			borderRight: `1px solid ${theme.palette.divider}`,
+			backgroundColor: theme.palette.background.default,
 			overflow: "inherit",
 		},
 		tabBody: {
 			padding: "10px",
+			maxWidth: "1000px",
+			backgroundColor: theme.palette.common.white,
 			flexGrow: 1,
 		},
 	}),
