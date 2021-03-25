@@ -16,6 +16,7 @@ import "./MainStyle.css";
 
 //import "./index.css";
 //import { Home } from "./views/Home/Home.js";
+const MainRoute = React.createContext("MainRoute");
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -52,6 +53,7 @@ ReactDOM.render(
 	<BrowserRouter>
 		<CssBaseline />
 		<TopBar />
+		<MainRoute.Provider value={route} />
 		{/* kick it all off with the root route */}
 		{renderRoutes(route)}
 	</BrowserRouter>,

@@ -6,6 +6,9 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import { LessonList } from "./LessonList";
 
+import { BrowserRouter, useLocation } from "react-router-dom";
+import { matchRoutes, renderRoutes } from "react-router-config";
+
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
 
@@ -53,14 +56,19 @@ const useStyles = makeStyles(
 			maxWidth: "1000px",
 			backgroundColor: theme.palette.common.white,
 			flexGrow: 1,
+			overflow: "auto",
 		},
 	}),
 	{ name: "Styled" }
 );
 
+function getStartTab() {
+	return 0;
+}
+
 export default function VerticalTabs() {
 	const classes = useStyles();
-	const [value, setValue] = React.useState(0);
+	const [value, setValue] = React.useState(getStartTab());
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);

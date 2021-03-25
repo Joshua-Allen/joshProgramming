@@ -84,15 +84,17 @@ function LessonSetup() {
 					textColor="primary"
 					centered>
 					<Tab label="VS Code" {...a11yProps(0)} />
-					<Tab label="StackBlitz" {...a11yProps(1)} />
+					{/*<Tab label="StackBlitz" {...a11yProps(1)} />*/}
 				</Tabs>
 			</Paper>
 			<TabPanel value={value} index={0}>
 				<LessonSetupSteps steps={vsCodeSteps} />
 			</TabPanel>
+
+			{/*
 			<TabPanel value={value} index={1}>
 				<LessonSetupSteps steps={stackblitzSteps} />
-			</TabPanel>
+			</TabPanel> */}
 		</div>
 	);
 }

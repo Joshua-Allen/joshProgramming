@@ -19,9 +19,15 @@ export const route = [
 			{
 				title: "Lessons",
 				menu: "Lessons",
-				path: "/Lessons",
 				exact: true,
+				path: "/Lessons",
 				component: Lessons,
+				routes: [
+					{
+						path: "/Lessons/:id",
+						component: Lessons,
+					},
+				],
 			},
 		],
 	},
